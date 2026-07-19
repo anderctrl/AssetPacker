@@ -103,6 +103,7 @@ namespace AssetLib {
 
         header.uncompressedSize = uncompressedPayload.size();
         header.compressedSize = compSize;
+        header.compressionType = static_cast<uint32_t>(compression);
 
         std::ofstream outFile(outputPath, std::ios::binary);
         if (!outFile.is_open()) return false;

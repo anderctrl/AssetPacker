@@ -13,11 +13,17 @@ FetchContent_Declare(
         SOURCE_SUBDIR build/cmake
 )
 
+set(ZSTD_BUILD_SHARED OFF CACHE INTERNAL "Build shared lib")
+set(ZSTD_BUILD_STATIC ON CACHE INTERNAL "Build static lib")
 set(ZSTD_BUILD_PROGRAMS OFF CACHE INTERNAL "")
 set(ZSTD_BUILD_TESTS OFF CACHE INTERNAL "")
 set(ZSTD_BUILD_CONTRIB OFF CACHE INTERNAL "")
 
 FetchContent_MakeAvailable(zstd)
+
+if(TARGET libzstd_static)
+    set_target_properties(libzstd_static PROPERTIES EXCLUDE_FROM_ALL TRUE)
+endif()
 
 add_subdirectory(AssetLib)
 add_subdirectory(AssetTool)

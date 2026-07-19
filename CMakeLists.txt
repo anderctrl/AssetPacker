@@ -4,6 +4,8 @@ project(AssetPacker)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+option(ASSETPACKER_INSTALL "Enable installation rules for AssetPacker components" OFF)
+
 include(FetchContent)
 
 FetchContent_Declare(
@@ -25,5 +27,20 @@ if(TARGET libzstd_static)
     set_target_properties(libzstd_static PROPERTIES EXCLUDE_FROM_ALL TRUE)
 endif()
 
+if(NOT ASSETPACKER_INSTALL)
+    macro(original_install)
+        _install(${ARGV})
+    endmacro()
+
+    macro(install)
+    endmacro()
+endif()
+
 add_subdirectory(AssetLib)
 add_subdirectory(AssetTool)
+
+if(NOT ASSETPACKER_INSTALL)
+    macro(install)
+        original_install(${ARGV})
+    endmacro()
+endif()

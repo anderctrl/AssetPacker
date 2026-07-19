@@ -19,6 +19,8 @@ namespace AssetLib {
         ZSTD,
     };
 
+#pragma pack(push, 1)
+
     struct TextureMetadata {
         uint32_t width = 0;
         uint32_t height = 0;
@@ -61,4 +63,6 @@ namespace AssetLib {
         uint32_t version = 1;
         uint32_t entryCount = 0;
     };
+
+#pragma pack(pop)
 }

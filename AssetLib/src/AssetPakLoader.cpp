@@ -38,15 +38,26 @@ namespace AssetLib {
     }
 
     bool PakArchive::HasFile(const std::string &virtualPath) const {
-        return m_TOC.contains(virtualPath);
+        std::string fullKey = virtualPath;
+
+        if (!fullKey.ends_with(".asset")) {
+            fullKey += ".asset";
+        }
+
+        return m_TOC.contains(fullKey);
     }
 
     LoadedAsset PakArchive::LoadAsset(const std::string &virtualPath) {
         LoadedAsset result;
 
-        const auto it = m_TOC.find(virtualPath);
+        std::string fullKey = virtualPath;
+        if (!fullKey.ends_with(".asset")) {
+            fullKey += ".asset";
+        }
+
+        const auto it = m_TOC.find(fullKey);
         if (it == m_TOC.end()) {
-            std::cerr << "PakLoader Error: Asset file not found in archive: " << virtualPath << "\n";
+            std::cerr << "PakLoader Error: Asset file not found in archive: " << fullKey << "\n";
             return result;
         }
 
@@ -76,7 +87,7 @@ namespace AssetLib {
             );
 
             if (ZSTD_isError(actualDecompressedSize)) {
-                std::cerr << "PakLoader Error: File decompression failed for " << virtualPath << "\n";
+                std::cerr << "PakLoader Error: File decompression failed for " << fullKey << "\n";
                 result.data.clear();
             }
         } else {

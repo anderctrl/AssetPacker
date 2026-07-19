@@ -6,12 +6,14 @@
 #include "AssetLib/AssetCommon.h"
 #include "AssetLib/AssetCompiler.h"
 #include "AssetLib/AssetLoader.h"
+#include "AssetLib/AssetPacker.h" // Added for .pak generation support
 
 namespace fs = std::filesystem;
 
 void PrintUsage() {
     std::cout << "Usage (Single File): AssetTool <input_file> <output_file> <type>\n";
     std::cout << "Usage (Full Folder): AssetTool --folder <input_dir> <output_dir>\n";
+    std::cout << "Usage (Pack Archive): AssetTool --pack <cooked_dir> <output_file.pak>\n";
     std::cout << "Supported types: texture, audio, fallback\n";
 }
 
@@ -61,11 +63,9 @@ void ProcessFolder(const std::string &inputDir, const std::string &outputDir) {
             const fs::path &filePath = entry.path();
 
             fs::path relativePath = fs::relative(filePath, sourceDir);
-
             fs::path targetPath = targetBaseDir / relativePath;
 
             targetPath.replace_extension(".asset");
-
             fs::create_directories(targetPath.parent_path());
 
             AssetLib::AssetType assetType = DetectTypeFromExtension(filePath.extension());
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    std::string firstArg = argv[1];
+    const std::string firstArg = argv[1];
 
     if (firstArg == "--folder") {
         if (argc < 4) {
@@ -95,6 +95,18 @@ int main(int argc, char *argv[]) {
         }
         ProcessFolder(argv[2], argv[3]);
         return 0;
+    }
+
+    if (firstArg == "--pack") {
+        if (argc < 4) {
+            std::cerr << "Error: Missing source directory or output file arguments.\n";
+            PrintUsage();
+            return 1;
+        }
+        if (AssetLib::CreatePakArchive(argv[2], argv[3])) {
+            return 0;
+        }
+        return 1;
     }
 
     if (argc < 4) {

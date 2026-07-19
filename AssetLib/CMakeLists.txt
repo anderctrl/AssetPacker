@@ -1,6 +1,8 @@
 add_library(AssetLib STATIC
         src/AssetCompiler.cpp
+        src/AssetPacker.cpp
         src/AssetLoader.cpp
+        src/AssetPakLoader.cpp
 )
 
 target_include_directories(AssetLib PUBLIC include)

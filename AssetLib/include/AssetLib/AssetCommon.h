@@ -5,6 +5,7 @@
 
 namespace AssetLib {
     constexpr char MAGIC_NUMBER[4] = {'A', 'S', 'T', '0'};
+    constexpr char PAK_MAGIC[4] = {'P', 'A', 'K', '0'};
 
     enum class AssetType : uint32_t {
         Raw = 0,
@@ -34,6 +35,7 @@ namespace AssetLib {
         char magic[4] = {MAGIC_NUMBER[0], MAGIC_NUMBER[1], MAGIC_NUMBER[2], MAGIC_NUMBER[3]};
         uint32_t version = 1;
         uint32_t assetType = static_cast<uint32_t>(AssetType::Raw);
+        uint32_t compressionType = static_cast<uint32_t>(CompressionType::None);
 
         uint64_t compressedSize = 0;
         uint64_t uncompressedSize = 0;
@@ -46,5 +48,17 @@ namespace AssetLib {
         } meta;
 
         AssetHeader() = default;
+    };
+
+    struct PakEntry {
+        char filePath[128] = {0};
+        uint64_t offset = 0;
+        uint64_t size = 0;
+    };
+
+    struct PakHeader {
+        char magic[4] = {PAK_MAGIC[0], PAK_MAGIC[1], PAK_MAGIC[2], PAK_MAGIC[3]};
+        uint32_t version = 1;
+        uint32_t entryCount = 0;
     };
 }

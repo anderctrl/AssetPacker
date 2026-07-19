@@ -18,6 +18,8 @@ namespace AssetLib {
 
         LoadedAsset LoadAsset(const std::string &virtualPath);
 
+        [[nodiscard]] const std::unordered_map<std::string, PakEntry>& GetIndex() const;
+
     private:
         std::ifstream m_PakFileStream;
         std::unordered_map<std::string, PakEntry> m_TOC;

@@ -96,4 +96,8 @@ namespace AssetLib {
 
         return result;
     }
+
+    const std::unordered_map<std::string, PakEntry> &PakArchive::GetIndex() const {
+        return m_TOC;
+    }
 }

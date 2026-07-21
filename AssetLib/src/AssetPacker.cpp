@@ -1,3 +1,4 @@
+#include <cstring>
 #include <AssetLib/AssetPacker.h>
 #include <AssetLib/AssetCommon.h>
 #include <filesystem>

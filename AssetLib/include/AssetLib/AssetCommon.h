@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <cstring>
 
 namespace AssetLib {
     constexpr char MAGIC_NUMBER[4] = {'A', 'S', 'T', '0'};
@@ -46,8 +45,8 @@ namespace AssetLib {
             TextureMetadata texture;
             AudioMetadata audio;
 
-            Metadata() { std::memset(this, 0, sizeof(Metadata)); }
-        } meta;
+            Metadata() : texture{} {}
+        } meta{};
 
         AssetHeader() = default;
     };
